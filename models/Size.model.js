@@ -7,6 +7,10 @@ const sizeSchema = new Schema({
     require: true,
     unique: true,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Size = model("Size", sizeSchema);

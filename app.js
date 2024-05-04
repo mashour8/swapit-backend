@@ -24,8 +24,8 @@ app.use("/api", categoryRoutes);
 const sizeRoutes = require("./routes/sizes.routes");
 app.use("/api", sizeRoutes);
 
-const prodcutRoutes = require("./routes/products.routes");
-app.use("/api", prodcutRoutes);
+const productRoutes = require("./routes/products.routes");
+app.use("/api", productRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

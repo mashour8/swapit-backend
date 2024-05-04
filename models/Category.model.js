@@ -6,6 +6,10 @@ const categorySchema = new Schema({
     require: true,
     unique: true,
   },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Category = model("Category", categorySchema);

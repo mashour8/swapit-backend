@@ -26,10 +26,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    orders: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
     isActive: {
       type: Boolean,
       default: true,

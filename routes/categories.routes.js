@@ -21,8 +21,13 @@ router.post("/categories", (req, res, next) => {
 //  GET /api/categories -  Retrieves all of the categories
 router.get("/categories", (req, res, next) => {
   Category.find()
-    .then((category) => {
-      res.json(category);
+    .then((response) => {
+      const limit = parseInt(req.query.limit);
+      const offset = parseInt(req.query.offset);
+
+      const categories = response.slice(offset, offset + limit);
+      const totalCount = response.length;
+      res.json({ categories, totalCount });
     })
     .catch((err) => {
       console.log(err);
@@ -55,7 +60,7 @@ router.put("/categories/:categoryId", (req, res, next) => {
     res.status(400).json({ message: "category id is not valid" });
     return;
   }
-  
+
   Category.findByIdAndUpdate(categoryId, req.body, { new: true })
     .then((category) => {
       res.status(200).json(category);
@@ -67,22 +72,23 @@ router.put("/categories/:categoryId", (req, res, next) => {
 });
 
 // DELETE  /api/categories/:categoryId  -  Deletes a specific category by id
+
 router.delete("/categories/:categoryId", (req, res, next) => {
   const { categoryId } = req.params;
   if (!mongoose.Types.ObjectId.isValid) {
     res.status(400).json({ message: "category id is not valid" });
     return;
   }
-  Category.findOneAndDelete(categoryId).then(() => {
-    res
-      .json({
-        message: `category with ${categoryId} is removed successfully.`,
-      })
-      .catch((err) => {
-        res.json(err);
-        console.log(err);
+  Category.findByIdAndDelete(categoryId)
+    .then((response) => {
+      res.json({
+        message: `${response.name}`,
       });
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
 });
 
 module.exports = router;

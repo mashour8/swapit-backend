@@ -21,8 +21,13 @@ router.post("/sizes", (req, res, next) => {
 //  GET /api/sizes -  Retrieves all of the sizes
 router.get("/sizes", (req, res, next) => {
   Size.find()
-    .then((size) => {
-      res.json(size);
+    .then((response) => {
+      const limit = parseInt(req.query.limit);
+      const offset = parseInt(req.query.offset);
+
+      const sizes = response.slice(offset, offset + limit);
+      const totalCount = response.length;
+      res.json({ sizes, totalCount });
     })
     .catch((err) => {
       console.log(err);
@@ -72,16 +77,16 @@ router.delete("/sizes/:sizeId", (req, res, next) => {
     res.status(400).json({ message: "Size id is not valid" });
     return;
   }
-  Size.findOneAndDelete(sizeId).then(() => {
-    res
-      .json({
-        message: `Size with ${sizeId} is removed successfully.`,
-      })
-      .catch((err) => {
-        res.json(err);
-        console.log(err);
+  Size.findByIdAndDelete(sizeId)
+    .then((response) => {
+      res.json({
+        message: `Size with ${response.name} is removed successfully.`,
       });
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
 });
 
 module.exports = router;

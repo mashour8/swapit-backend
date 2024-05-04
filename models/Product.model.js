@@ -19,6 +19,7 @@ const productSchema = new Schema({
   },
 
   description: String,
+
   isNew: {
     type: Boolean,
     default: false,
@@ -27,6 +28,11 @@ const productSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isEssential: {
+    type: Boolean,
+    default: false,
+  },
+
   isActive: {
     type: Boolean,
     default: true,

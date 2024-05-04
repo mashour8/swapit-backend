@@ -59,8 +59,16 @@ router.post("/products", (req, res, next) => {
 //  GET /api/products -  Retrieves all of the products
 router.get("/products", (req, res, next) => {
   Product.find()
+    .populate("category")
     .then((response) => {
-      res.json(response);
+      const limit = parseInt(req.query.limit);
+      const offset = parseInt(req.query.offset);
+      // res.json(response);
+      const products = response.slice(offset, offset + limit);
+      const totalCount = response.length;
+
+      res.header("Access-Control-Allow-Origin", "*");
+      res.json({ products, totalCount });
     })
     .catch((err) => {
       console.log(err);
@@ -68,14 +76,16 @@ router.get("/products", (req, res, next) => {
     });
 });
 
-//  GET /api/products/:prodcutId -  Retrieves a specific product by id
-router.get("/prodcuts/:prodcutId", (req, res, next) => {
-  const { prodcutId } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(prodcutId)) {
-    res.status(400).json({ message: "prodcut id is not valid" });
+//  GET /api/products/:productId -  Retrieves a specific product by id
+router.get("/products/:productId", (req, res, next) => {
+  const { productId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400).json({ message: "product id is not valid" });
     return;
   }
-  Product.findById(prodcutId)
+  Product.findById(productId)
+    .populate("category")
+    .populate("sizes")
     .then((product) => {
       res.status(200).json(product);
     })
@@ -85,17 +95,17 @@ router.get("/prodcuts/:prodcutId", (req, res, next) => {
     });
 });
 
-// PUT  /api/products/:prodcutId  -  Updates a specific prodcut by id
-router.put("/prodcuts/:prodcutId", (req, res, next) => {
-  const { prodcutId } = req.params;
+// PUT  /api/products/:productId  -  Updates a specific product by id
+router.put("/products/:productId", (req, res, next) => {
+  const { productId } = req.params;
   if (!mongoose.Types.ObjectId.isValid) {
-    res.status(400).json({ message: "prodcut id is not valid" });
+    res.status(400).json({ message: "product id is not valid" });
     return;
   }
 
-  Product.findByIdAndUpdate(prodcutId, req.body, { new: true })
-    .then((prodcut) => {
-      res.status(200).json(prodcut);
+  Product.findByIdAndUpdate(productId, req.body, { new: true })
+    .then((product) => {
+      res.status(200).json(product);
     })
     .catch((err) => {
       res.json(err);
@@ -104,22 +114,23 @@ router.put("/prodcuts/:prodcutId", (req, res, next) => {
 });
 
 // DELETE  /api/products/:productId  -  Deletes a specific product by id
-router.delete("/prodcuts/:prodcutId", (req, res, next) => {
-  const { prodcutId } = req.params;
+router.delete("/products/:productId", (req, res, next) => {
+  const { productId } = req.params;
   if (!mongoose.Types.ObjectId.isValid) {
-    res.status(400).json({ message: "prodcut id is not valid" });
+    res.status(400).json({ message: "product id is not valid" });
     return;
   }
-  Product.findOneAndDelete(prodcutId).then(() => {
-    res
-      .json({
-        message: `prodcut with ${prodcutId} is removed successfully.`,
-      })
-      .catch((err) => {
-        res.json(err);
-        console.log(err);
+  Product.findByIdAndDelete(productId)
+    .then((response) => {
+      res.json({
+        // message: `product with ${response.name} is removed successfully.`,
+        message: `${response.name}`,
       });
-  });
+    })
+    .catch((err) => {
+      res.json(err);
+      console.log(err);
+    });
 });
 
 module.exports = router;

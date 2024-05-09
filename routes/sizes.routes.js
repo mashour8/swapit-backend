@@ -27,6 +27,7 @@ router.get("/sizes", (req, res, next) => {
 
       const sizes = response.slice(offset, offset + limit);
       const totalCount = response.length;
+      res.header("Access-Control-Allow-Origin", "*");
       res.json({ sizes, totalCount });
     })
     .catch((err) => {

@@ -27,6 +27,7 @@ router.get("/categories", (req, res, next) => {
 
       const categories = response.slice(offset, offset + limit);
       const totalCount = response.length;
+      res.header("Access-Control-Allow-Origin", "*");
       res.json({ categories, totalCount });
     })
     .catch((err) => {

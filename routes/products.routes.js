@@ -32,7 +32,7 @@ router.post("/products", (req, res, next) => {
     category,
     sizes,
     description,
-    isNew,
+    isNewProduct,
     isSeason,
     isActive,
   } = req.body;
@@ -43,7 +43,7 @@ router.post("/products", (req, res, next) => {
     category,
     sizes: sizes,
     description,
-    isNew,
+    isNewProduct,
     isSeason,
     isActive,
   })

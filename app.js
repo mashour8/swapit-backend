@@ -27,6 +27,12 @@ app.use("/api", sizeRoutes);
 const productRoutes = require("./routes/products.routes");
 app.use("/api", productRoutes);
 
+const userRoutes = require("./routes/users.routes");
+app.use("/auth", userRoutes);
+
+const draftOrderRoutes = require("./routes/daraftOrder.routes");
+app.use("/api", draftOrderRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

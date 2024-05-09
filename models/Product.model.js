@@ -9,18 +9,27 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
-  sizes: {
-    type: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Size",
+  sizes: [
+    {
+      name: {
+        type: String,
+        require: true,
       },
-    ],
-  },
+      inStock: { type: Boolean, default: false },
+    },
+  ],
 
+  // sizes: {
+  //   type: [
+  //     {
+  //       type: Schema.Types.ObjectId,
+  //       ref: "Size",
+  //     },
+  //   ],
+  // },
   description: String,
 
-  isNew: {
+  isNewProduct: {
     type: Boolean,
     default: false,
   },

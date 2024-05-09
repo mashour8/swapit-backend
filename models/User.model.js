@@ -3,18 +3,12 @@ const { Schema, model } = require("mongoose");
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
-    firstname: {
+    name: {
       type: String,
-      required: [true, "First Name is required."],
-      lowercase: true,
+      required: [true, "Name is required."],
       trim: true,
     },
-    lastname: {
-      type: String,
-      required: [true, "Last Name is required."],
-      lowercase: true,
-      trim: true,
-    },
+
     email: {
       type: String,
       required: [true, "Email is required."],
@@ -28,10 +22,15 @@ const userSchema = new Schema(
     },
     orders: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Order",
       },
     ],
+    draftOrder: {
+      type: Schema.Types.ObjectId,
+      ref: "DraftOrder",
+    },
+
     isActive: {
       type: Boolean,
       default: true,

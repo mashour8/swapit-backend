@@ -134,14 +134,15 @@ router.post("/login", (req, res, next) => {
     });
 });
 
-router.get("/user", (req, res, next) => {
-  const { email } = req.params;
+router.get("/user/:id", (req, res, next) => {
+  const { id } = req.params;
   // if (!mongoose.Types.ObjectId.isValid(email)) {
   //   res.status(400).json({ message: "cart id is not valid" });
   //   return;
   // }
-  User.findOne(email)
-    .populate("draftOrder")
+  User.findById(id)
+    .populate("orders")
+    .select("-password")
     .then((response) => {
       res.status(200).json(response);
     })
@@ -151,15 +152,15 @@ router.get("/user", (req, res, next) => {
     });
 });
 
-router.put("/user/", (req, res, next) => {
-  // const { draftId } = req.params;
+router.put("/user/:id", (req, res, next) => {
+  const { id } = req.params;
 
   // if (!mongoose.Types.ObjectId.isValid) {
   //   res.status(400).json({ message: "cart id is not valid" });
   //   return;
   // }
 
-  User.findOneAndUpdate({ email: "ashour@gmail.com" }, req.body, { new: true })
+  User.findByIdAndUpdate(id, req.body, { new: true })
 
     .then((response) => {
       res.status(200).json(response);

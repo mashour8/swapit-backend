@@ -141,7 +141,7 @@ router.get("/user/:id", (req, res, next) => {
   //   return;
   // }
   User.findById(id)
-    .populate("orders")
+    .populate("orders draftOrder")
     .select("-password")
     .then((response) => {
       res.status(200).json(response);
